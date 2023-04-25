@@ -1,0 +1,6 @@
+
+curl -u <username>:<password> -x GET 'repo-url/service/rest/v1/repositories' ---> query repositories
+
+curl -u <username>:<password> -x GET 'repo-url/service/rest/v1/components?repository=<repository-name> ---> query components of a repository
+
+curl -u <username>:<password> -x GET 'repo-url/service/rest/v1/components/<component-id> ---> query assets of a component 

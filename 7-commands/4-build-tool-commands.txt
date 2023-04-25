@@ -1,0 +1,19 @@
+Gradle
+
+./gradlew build ---> build the artifact
+
+./gradlew publish ---> push the artifact to respective repository
+
+Maven
+
+mvn package ---> build the artifact
+
+mvn deploy ---> push the artifact to respective repository
+
+Npm
+
+npm pack ---> pack JS app into tar file
+
+npm run build ---> bundle JS app ( package.json/ build: webpack)
+
+
