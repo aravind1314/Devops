@@ -1,0 +1,12 @@
+version: '3'
+services:
+  java-maven-app:
+    image: ${URL}:${IMAGE}
+    ports:
+      - 8080:8080
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=password

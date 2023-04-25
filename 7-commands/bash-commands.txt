@@ -1,0 +1,141 @@
+#!/bin/bash -> shebang line 
+variable_name=xxxxxx , echo "$variable_name"
+variable_name=$(linux-command) , echo "$variable_name"
+
+if [condition]
+then
+......
+elif
+then
+......
+else
+......
+fi
+
+if [-d "name"] ----> checks if name is a folder(-b,-c,-d,......file test operators)
+then
+.....cmds......
+else
+....cmds.....
+fi
+
+if [$a -eq $b] ----------> checks a is equal to b (-ne,-gt,-lt,-ge,-le relational operators)
+
+if [[ "$a"=="$b"]] --------> string comparision (==,=,=! string operators)
+
+var_name=$1 , echo "$var_name" , ./filename arg_pass  -------> passing argument ($1.....$9)
+
+read -p "---msg----" var_name , echo "$var_name"  ----------> reading input from user
+
+echo "$*" ----------> prints all params
+echo "$#" -----------> prints no of params
+
+------------------------------------------------------------------
+ 
+for x in $* ---------> for loop
+do
+ echo "$x"
+done
+
+--------------------------------------------------------------------
+sum=0
+
+while true ---------> while loop
+do
+	read -p "enter score or q to quit" score
+	if [ "$score" == "q" ]
+	then
+		break
+	fi
+	sum=$((sum+score))
+	echo "total score is $sum"
+done
+
+--------------------------------------------------------------------
+
+function func_name {
+   
+   .......cmds........
+   
+}
+
+func_name 
+
+---------------------------------------------------------------------
+
+
+function func_name() {
+
+   var_name=$1
+   var2_name=$2   
+   .......cmds........
+   
+}
+
+func_name arg1 arg2
+
+-------------------------------------------------------------------
+
+function score_sum {
+
+        sum=0
+        while true
+do
+        read -p "enter score or q to quit" score
+        if [ "$score" == "q" ]
+        then
+                break
+        fi
+        sum=$((sum+score))
+        echo "total score is $sum"
+done
+}
+
+score_sum
+
+-------------------------------------------------------------------
+
+function create_file(){
+
+        file_name=$1
+        is_x=$2
+        touch $file_name
+        echo "$file_name created"
+        if [ "$is_x" = true ]
+        then
+                chmod +x $file_name
+                echo "x added"
+        fi
+
+}
+
+create_file a.txt
+
+create_file b.txt
+
+create_file c.sh true
+
+----------------------------------------------------------------
+
+function sum(){
+        total=$(($1+$2))
+        echo "$total"
+}
+
+result=$(sum 10 20)
+echo "result $result"
+
+----------------------------------------------------------------
+
+function sum(){
+        total=$(($1+$2))
+        return $total
+}
+
+sum 10 20
+result=$?
+echo "result $result"
+
+
+
+

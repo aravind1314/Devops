@@ -1,0 +1,16 @@
+ps - list process info for that terminal session
+ps aux - list all process info including the process that are not associated to terminal
+ps -m - system processes and its threads
+pstree - lists process tree
+top - real time data of process info
+top -p <process id> - process info for single process
+uptime - time , load averages etc
+vmstat - detailed info about process utilization
+cat /var/log/syslog - log files of the system
+cat /etc/rsyslog.d - conf files with list of paths for log files
+logger -s <message> - manually enter messages to logs
+lsof - list of files used by a process
+nice -n <NI value> <program name/command> - change nice value
+renice -<NI value> -p <PID> - change nice value of existing program
+ls /proc - list all procesess as files
+

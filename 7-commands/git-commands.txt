@@ -1,0 +1,42 @@
+cd <dir name> ----------> git init = initialize git
+git status = current status
+git add <file name> = add file to statging area
+git add . = add all files in current dir to staging area
+git rm --cached <file> = to unstage
+git rm -r --cached <file> = to ignore file from tracking by git
+git commit -m "<message>" = add files to local repo
+git restore <file> = discard changes in working directory
+git diff <file> = show diff btwn modified and prev file
+git remote add origin https://github.com/aravind1314/gitPractice.git = adding remote repo for things to push , naming it as origin(can be any name) instead of typing the whole url
+git branch -M master = changing branch to master (-M = --move --force)
+git push -u origin master = push to origin from master (-u = set up stream)
+git config --list = list configurations
+git config --global user.<name,email,password> "<xxxxxxxxx>" = set global configs
+git config credential.helper store = stores the config changes permanently into git
+git config credential.helper cache = stores the config changes temporarily into git
+git remote set-url origin <url> = chnage remote repo url
+git clone git@github.com:aravind1314/gitPractice.git = clone remote repo to local
+git pull = pull changes from remote repo to local
+git branch <name> = create new branch
+git checkout/swith <branch name> = change to that branch
+git checkout <sha value of commit> = checkout to a particular commit
+git branch = list all branches
+git branch -a = list all branches including ones in remote repo's
+git branch -b <name> = create and checkout to that branch
+git switch -c <name> = create and checkout to that branch
+git switch - = switch to prev branch
+git branch -d <branch name> = delete branch
+git merge <branch name> = merge branch name into current branch
+git branch -v = shows last commit for all branches
+git branch --merged = list branches that are merged into current branch
+git branch --no-merged = list branches that are not merged into current branch
+git log = history of all commits
+git log --stat = history of commits with more info
+git log --pretty=oneline = history of commits in short form
+git stash = tempoararily move changes in working directory
+git stash pop = bring back changes from stash to  working directory
+git reset --hard HEAD~1 = undoing 1 commit in local repo
+git reset --hard HEAD~1 ; git push --force = undoing 1 commit in remote repo (do not perform on master or devlope branch)
+git revert <commit sha value> = creates new commit reverting the changes
+git reset --soft HEAD~1 = undoing 1 commit without removing the changes
+git commit --amend = add changes to the last commit 

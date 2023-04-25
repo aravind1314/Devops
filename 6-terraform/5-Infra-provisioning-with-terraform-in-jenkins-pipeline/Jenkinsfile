@@ -1,0 +1,77 @@
+def gv
+pipeline {
+    agent any
+    environment {
+        REPO_URL="tma1314/docker-hub-repo"
+    }
+    tools {
+        maven 'maven'
+        }
+    stages {
+        stage("init") {
+            steps {
+                script {
+                    gv= load "script.groovy"
+                }
+            }
+        }
+        stage("provision-server") {
+            environment {
+                AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+                AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+                TF_VAR_env_prefix ='test'
+            }
+            steps {
+                script {
+                    gv.provisionServer()
+                }
+            }
+        }
+        stage("versioning") {
+            steps {
+                script {
+                    gv.versioning()
+                }
+            }
+        }
+        stage("buildJar") {
+            steps {
+                script {
+                    gv.buildJar()
+                }
+            }
+        }
+        stage("buildImage") {
+            steps {
+                script {
+                    gv.buildImage()
+                }
+            }
+        }
+        stage("pushImage") {
+            steps {
+                script {
+                    gv.pushImage()
+                }
+            }
+        }
+        stage("deploy") {
+            environment {
+                DOCKER_CREDS=credentials('dockerhub-cred')
+            }
+            steps {
+                script {
+                    gv.deploy()
+                }
+            }
+        }
+        stage("push-new-version") {
+            steps {
+                script {
+                    gv.pushVersion()
+                }
+            }
+        }
+    }
+}
+

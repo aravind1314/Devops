@@ -1,0 +1,56 @@
+#!/usr/bin/env groovy
+
+library identifier: 'jk-shrd-lib@main', retriever: modernSCM(
+    [
+        $class: 'GitSCMSource',
+        remote: 'https://gitlab.com/aravind1314/jk-shrd-lib.git',
+        credentialsId: 'gitlab-cred'
+    ]
+)
+
+def gv
+pipeline {
+    agent any
+    tools {
+        maven 'maven'
+        }
+    stages {
+        stage("init") {
+            steps {
+                script {
+                    gv= load "script.groovy"
+                }
+            }
+        }
+        stage("versioning") {
+            steps {
+                script {
+                    gv.versioning()
+                }
+            }
+        }
+        stage("buildJar") {
+            steps {
+                script {
+                    buildJar()
+                }
+            }
+        }
+        stage("buildImage") {
+            steps {
+                script {
+                    buildImage "tma1314/docker-hub-repo:${IMAGE_TAG}"
+                }
+            }
+        }
+        stage("pushImage") {
+            steps {
+                script {
+                    dockerLogin()
+                    gv.pushImage()
+                }
+            }
+        }
+    }
+}
+

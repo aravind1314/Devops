@@ -1,0 +1,10 @@
+appName: cartservice
+appImage: gcr.io/google-samples/microservices-demo/cartservice
+containerPort: 7070
+containerEnvVars:
+- name: PORT
+  value: "7070"
+- name: REDIS_ADDR
+  value: "rediscart:6379"
+
+servicePort: 7070

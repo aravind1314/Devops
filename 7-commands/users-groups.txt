@@ -1,0 +1,45 @@
+user accouunt info in /etc/passwd
+aravind:x:1000:1000:aravind,,,:/home/aravind:/bin/bash
+username:password:UID:GID:GECOS:HOMEDIR:SHELL
+UID of rootuser=0
+GECOS - name and additional desc
+GID stored in /etc/group
+docker:x:999:aravind
+group name : group passwd : group id : list of users 
+password stored in /etc/shadow     
+aravind:$y$j9T$QlTPplDfANSCF5QCGeiVF/$XC53Tffb8KP3GvGTRjMoMdCpkV6drWqZWcoSxw8Rfs.:19153:0:99999:7:::
+useranme:encrypted password:days since the passwrod was changed(from 1st jan 1970): min passwd age: max passwd age: warning period : passwd expiry period : accnt expiration date : reserved field(future use)
+id <username> - list uid and groups with gid
+ 
+
+sudo adduser <username>-create new user
+sudo passwd <username>-change password
+sudo deluser <username>-delete user
+sudo deluser --remove-all-files <username> - remove all files related to user and delete user
+su - <username>-switch user
+su - = log to rootuser
+sudo addgroup <groupname>-create new group
+groups - lists all groups the user in
+sudo usermod -g <groupname> <username> - add user to primary group
+sudo usermod -G <groupname><gn><gn>.....<username>-add user to list of secondary groups
+sudo usermod -aG <gn><gn>.....<un>-add user of secondary groups without overriding the existing lists
+sudo delgroup <username>-delete group
+sudo gpasswd -d <username> <groupname>-remove user from a group
+
+permissions
+ls -l = list all permissions related info
+ls -ld = permissions of directory
+d = directory
+- = regularfile
+r = read permission
+w = write
+x = execute
+- = no permission
+sudo chown <ownername> <filename> - change owner of the file
+sudo chgrp <groupname> <filename> - chnage group of the file
+sudo chmod (u/g/o)(+/-)(r/w/x) <filename> - add/remove user/group/others permissions
+sudo chmod (+/-)(r/w/x) <filename> - add/remove permissions fr all groups
+sudo chmod (u/g/o/a)=(rwx-) <filename> - set entire permission value for one group or all groups
+sudo chmod (0-7)(0-7)(0-7) <filename> - asssign permissions for all groups in one cmd
+
+

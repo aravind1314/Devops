@@ -1,0 +1,30 @@
+helm list ---> list installed charts
+
+helm repo list ---> list added repos
+
+helm repo add  <my-repo-name> <repo-url> ---> add repo to your helm
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+helm search repo <my-repo-name>/<chart-name> ---> search for a chart in the repo
+helm search repo bitnami/mongo
+
+helm install <release-name> --values <my-values.yaml> <my-repo-name>/<chart-name> ---> install chart with default values replaced by my-values.yaml
+helm install mongodb --values helm-mongodb-spec-change.yaml bitnami/mongodb
+
+helm delete(or)uninstall <release-name> ---> delete the installed chart
+
+helm create <chart-name> ---> create new helm chart
+
+helm template -f <my-values-file-path> <chart-name> ---> render chart templates locally
+
+helm install -f <my-values-file-path> <release-name> <chart-name> ---> install chart with release name and default values replaced
+
+helm install --dry-run -f <my-values-file-path> <release-name> <chart-name> ---> render templates without installing
+
+./helmfile sync ---> deploy all the releases defined in a helmfile
+
+./helmfile list ---> list all the releases synced 
+
+./helmfile destroy ---> remove all the releases dployed using helmfile
+
+

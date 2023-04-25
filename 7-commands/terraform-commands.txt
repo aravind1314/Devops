@@ -1,0 +1,21 @@
+terraform init ---> download the providers pulgins
+
+terraform plan ---> list differences between current state of the infra and desired state defined in config file (a preview of what will be done)
+
+terraform apply ---> execute the infra config file
+
+terraform apply -auto-approve --> apply the config without prompting for confirmation
+
+terraform apply -var "<variable-name>=<value>" ---> assign values to variables
+
+terraform apply -var-file <var-file-name> ---> assign var values using *.tfvars file (default terraform.tfvars)
+
+terraform destroy ---> destroy all the infra created through config file
+
+terraform destroy -target <resouce>.<resource-name> ---> destroy a specific resource (not recommended)
+
+terraform state list ---> list resources in the state
+
+terraform state show <resource-name-from-list> ---> detail info of a resource
+
+

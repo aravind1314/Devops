@@ -1,0 +1,12 @@
+appName: rediscart
+appReplicas: 1
+appImage: redis
+appVersion: alpine
+containerPort: 6379
+containerEnvVars:
+- name: PORT
+  value: "6379"
+volumeName: redis-data
+volumeMountPath: /data
+
+servicePort: 6379

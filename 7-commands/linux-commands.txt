@@ -1,0 +1,114 @@
+mkdir-create new folder
+mkdir -p [foldername]/[foldername] - creates both parent and subfolders
+cd [folder name]-enter folder
+touch [filename.extension]-create new file
+mv [oldname] [newname]-change file/folder names
+cp [origial file/folder] [new file/folder]-copy contents and create new fl/fol
+rm [filename]-remove file
+rm -r(recursively) [foldername]-remove folder
+rm -rv(verbose) [foldername]- shows all files and folders removed
+rmdir - remove folder
+cd .. - enter parent dir
+cd - - enter prevoius dir
+cd / - enter root dir
+cd ~ - enter home dir
+$ - normal user
+# - root user
+open [filename]- opens file
+cat [filename]-displays file contents
+file [filename]- displays file type
+ls - displays folder contents
+ls -a(all)-displays all files(hidden)
+ls -R [foldername]-displays all folders and files inside
+find ~(place to find) -name [filename].*(txt,pdf,img....) - finds all files with filename in ~
+find ~(place to find) -name *.txt - finds all text files in ~
+find ~(place to find) -type d(directory) -name test - finds test directory in ~  
+pwd - prints working dir
+ln -s [file name] [link name] - soft link for file
+ln [file name] [link name] - hard link for file
+find -L ~(place to find) -samefile [file name] - finds all symlinks for the file using file name
+find -L ~(place to find) -inum [inode number] - finds all symlinks for the file with inode number
+head [filename] - shows first 10 lines
+head -n 15 [filename] - 15 lines
+tail [filename] - last 10 lines
+tail -n 15 [filename] - 15 lines
+sort [filename] - sorts alphabetically
+sort -r [filename] - reverse sorts
+uniq [filename] - removes duplicates {works only when duplicates are adjacent to each other}  {sort | uniq}
+uniq -c [filename] - no of ocurences
+uniq -u [filename] - only unique values
+uniq -d [filename] - only duplicate values
+wc [filename] - linecount wordcount filesize {-l only linecount} {-w only wordcount} {-c onlyfilesize}
+ * | tr a-z A-Z - samll to capital
+<some command> & - runs command in background as a job and to continue for typing other commands
+ jobs - list all jobs rununing in background
+ fg %[job ID] - brings program to foreground
+ ctr+z(stops program) and bg(send program to background)
+ kill %[job ID] - kills prgrm in bgs
+history
+clear
+ctl+r - search commands
+man [command name] - document about command
+whatis [command name]
+which [command name] - gives path of the command
+df -T - filesystem type
+df -h - human readable form of utilization FS
+du -h - disk utlization of current dir
+du -h / - du of root dir
+df -i - availabe inodes
+ls -li - list inode numbers
+stat [file/dir name] - detailed info of inodes 
+find . -inum 8800836 –delete - find a file with inode no and delete
+sudo parted -l - file system structure
+cat /etc/fstab - configurable file of filesystem table
+uname -a
+hostname -i - ip address
+hostname -I - all ip address
+ip r - default gateway
+ip a - network info
+cat /etc/os-release - os version info
+crontab -l - crontable 
+getconf PAGE_SIZE - gives paze size of the system
+umask -s = display current mask as symbolic value
+umask -p = display current mask as numeric value 
+umask [mask] = set new mask
+lscpu
+lsmem
+
+
+vim commands
+i - insert mode 
+esc - escape from insert mode to command mode
+:wq - write and quit
+:q! - quit without saving
+dd - delete a line
+d10 - delete 10 lines
+0 - start of line
+$ - end of line
+A - end of line with insert mode
+/[searchquery] - search
+n - next in search
+N - prev in search
+:%s/oldname/newname - replace a string
+:[lineno] - goto line no
+[lineno]G - ''   ''   ''
+
+piping
+less - opens large files in small pages
+ls /usr/bin | less - (space - next,b - back,q - quit)
+grep - golbally search regular expressions and print
+history | grep sudo - search and print all commands from history that has sudo 
+history | grep "sudo chmod" | less
+
+redirecting
+history | grep sudo > sudo-cmd.txt - create a file with all sudo cmds from history
+history | grep rm >> sudo-cmd.txt - add rm cmds to existing file
+
+clear;sleep 5;ls - exec multi cmds in one line
+
+
+
+
+
+
+

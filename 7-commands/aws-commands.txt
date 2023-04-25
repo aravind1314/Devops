@@ -1,0 +1,146 @@
+aws configure list ---> list aws cli basic config
+
+aws configure ---> manually change config
+
+aws configure import -csv <filename.csv> ---> update the config using csv file downloaded while generating access key in IAM security credentials
+
+------------VPC-------------------
+
+aws ec2 describe-vpcs ---> list vpc details
+
+------------subnets-----------------
+
+aws ec2 describe-subnets ---> list all subnets
+
+---------security-groups---------------------------------
+
+aws ec2 describe-security-groups ---> list all security groups
+
+aws ec2 describe-security-groups --group-id <******> ---> list particular security group
+
+aws ec2 create-security-group \
+--group-name <******> \
+--decription <"******"> \
+--vpc-id <******>	---> create a new security group
+
+aws ec2 authorize-security-group-ingress \
+--groupi-id <******> \
+--protocol <******> \
+--port <******> \
+--cidr <******>		---> add ingress rules to a security group 
+
+-------------key-pairs----------------------------------------
+
+aws ec2 describe-key-pairs ---> list all the key pairs
+
+aws ec2 create-key-pair \
+--key-name <******> \
+--query 'KeyMaterial' \
+--output text > <file-name.pem> ---> crate new key pair and store the praivate key in file-name.pem
+
+------------IMAGE-AMI----------------------------------------------
+
+aws ec2 describe-images --region ap-south-1 \
+--filters "Name=name,Values=ubuntu*"  ---> find ubuntu imgae details
+
+--------------EC2-instance------------------------------------------
+
+aws ec2 describe-instances ---> list all insances details
+
+aws ec2 run-instances \
+--image-id <******> \
+--count <***> \
+--instance-type <******> \
+--key-name <******> \
+--security-group-ids <******> \
+--subnet-id <******>  ---> launch new instance 
+
+--------------------------IAM------------------------------------------
+
+aws iam create-group --group-name <******> ---> create a group 
+
+aws iam create-user --user-name <******> ---> create user
+
+aws iam add-user-to-group --user-name <******> --group-name <******> ----> add user to a group
+
+aws iam get-group --group-name ---> list details of a particular group
+
+aws iam get-user --user-name ---> list details of a particular user
+
+aws iam list-policies --query 'Policies[?PolicyName==`AmazonEC2FullAccess`].Arn' --output text ---> get arn for amazonec2fullaccess policy
+
+aws iam attach-group-policy --group-name <******> --policy-arn <******> ---> attach policy to group using arn
+
+aws iam attach-user-policy --user-name <******> --policy-arn <******> ---> attach policy to user using arn
+
+aws iam list-attached-group-policies --group-name <******> ---> list attached policies of a group
+
+aws iam list-attached-user-policies --user-name <******> ---> list attached policies of a user
+
+--------console-login-------------
+
+aws iam create-policy --policy-name <******> --policy-document file://<file-name.json> ---> create new policy using file-name.json
+
+//create changepassword policy
+//attach to user 
+
+aws iam get-login-profile --user-name <******>
+
+aws iam create-login-profile \
+--user-name <******> \
+--password <******> \
+--password-reset-required ---> set pwd to user for login through aws management console
+
+----------cli-login-----------------
+
+aws iam list-access-keys 
+
+aws iam create-access-key --user-name <******> ---> create access key for user
+
+aws configure ---> change default user
+
+aws configure set aws_access_key_id <******> ---> change only access-key-id
+
+aws configure set aws_secret_access_key <******> ---> change only secret-access-key
+
+export AWS_ACCESS_KEY_ID=<******> ---> exporting as env vars in this shell without changing default values 
+
+export AWS_SECRET_ACCESS_KEY=<******> ---> exporting as env vars in this shell without changing default values
+
+-----------------------deletion------------------------------------------------------------------
+
+aws iam detach-group-policy --group-name <******> --policy-arn <******>
+
+aws iam delete-policy --policy-arn <******> 
+
+aws iam delete-access-key --access-key-id <******> --user-name <******>
+
+aws iam delete-login-profile --user-name <******>
+
+aws iam remove-user-from-group --user-name <******> --group-name <******>
+
+aws iam delete-group --group-name <******>
+
+aws iam delete-user --user-name <******>
+
+aws ec2 stop-instances --instance-ids <******>
+
+aws ec2 terminate-instances --instance-ids <******>
+
+aws ec2 delete-key-pair --key-name <******>
+
+aws ec2 delete-security-group --group-id <******>
+
+
+aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws_account_id>.dkr.ecr.<region>.amazonaws.com ---> authenticate docker to accesss ECR
+
+aws eks update-kubeconfig --name <eks-cluster-name> ---> connect kubectl to eks cluster
+
+aws eks update-kubeconfig --rotate-certificates --name <eks-cluster-name> ---> regenarate the client_certificate ,private key ,certificate authority(CA) ,token and save them to kubeconfig file 
+
+
+
+
+
+
+

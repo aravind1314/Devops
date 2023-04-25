@@ -1,0 +1,63 @@
+def gv
+pipeline {
+    agent any
+    tools {
+        maven 'maven'
+        }
+    stages {
+        stage("init") {
+            steps {
+                script {
+                    gv= load "script.groovy"
+                }
+            }
+        }
+        stage("versioning") {
+            steps {
+                script {
+                    gv.versioning()
+                }
+            }
+        }
+        stage("buildJar") {
+            steps {
+                script {
+                    gv.buildJar()
+                }
+            }
+        }
+        stage("buildImage") {
+            steps {
+                script {
+                    gv.buildImage()
+                }
+            }
+        }
+        stage("pushImage") {
+            steps {
+                script {
+                    gv.pushImage()
+                }
+            }
+        }
+        stage("deploy") {
+            environment {
+                AWS_ACCESS_KEY_ID=credentials('aws_access_key_id')
+                AWS_SECRET_ACCESS_KEY=credentials('aws_secret_access_key')
+            }
+            steps {
+                script {
+                    gv.deploy()
+                }
+            }
+        }
+        stage("push-new-version") {
+            steps {
+                script {
+                    gv.pushVersion()
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,143 @@
+minikube start --vm-driver=<******> ---> start cluster
+
+minikube stop ---> stop cluster
+
+minikube delete ---> delete cluster
+
+minikube status ---> status of cluster
+
+minikube profile list ---> list profiles
+
+kubectl version ---> k8s version
+
+kubectl get all ---> list all components inside the cluster
+
+kubectl get nodes ---> status of the nodes
+
+kubectl get pods ---> status of the pods
+
+kubectl get services ---> status of the services
+
+kubectl get deployment ---> status of the deployment
+
+kubectl create deployment <deployment-name> --image=<image-name> ---> create a new deployment
+
+kubectl edit deployment <deployment-name> ---> edit deployment configuration file for changed deployment 
+
+kubectl delete deployment <deployment-name> ---> delete deployment
+
+kubectl get replicaset ---> status of replicaset
+
+kubectl describe pods <pod-name> ---> get status of the pod when container inside is being created
+
+kubectl logs <pod-name> ---> logs of the container inside the pod
+
+kubectl logs <pod-name> -c <container-name> ---> logs of a particular container incase of multiple containers in a pod
+
+kubectl exec -it <pod-name> -- bash ---> enter the terminal of the container inside the pod
+
+kubectl apply -f <config-file.yaml> ---> create components using config-file
+
+kubectl delete -f <config-file.yaml> ---> delete components that are created using config-file
+
+kubectl describe service <service-name> ---> targetports and ip connection details
+
+kubectl get pods -o wide ---> get ip addr of pods
+
+kubectl get deployment <deployment-name> -o yaml ---> deployment result including status
+
+minikube service <service-name> --->  assign public IP to external service
+
+kubectl get namespaces ---> list all namespaces
+
+kubectl cluster-info ---> list cluster info stored in configmap of kube-public namespace
+
+kubectl create namespace <namespace-name> ---> create new namaspace
+
+kubectl delete namespace <namespace-name> ---> delete namespace
+
+kubectl api-resources --namespaced=true ---> list all resources that can be namespaced
+
+kubectl api-resources --namespaced=false ---> list all resources that cannot be namespaced
+
+kubectl apply -f <config-file.yaml> --namespace=<namespace-name> ---> create components in the namespace (if namespace is not defined in config-file)
+
+kubectl get <component-name> -n <namespace-name> ---> list component from namespace (if not mentioned checks default namespace)
+
+kubectl get <component-name> == kubectl get <component-name> -n default
+
+kubectl get endpoints ---> list all endpoints of each service
+
+minikube addons list ---> list all addons and their status
+
+minikube addons enable dashboard ---> start dashboard pods and services in kubernetes-dashboard namespace
+
+minikube addons disable dashboard ---> disable dashboard
+
+minikube addons enable ingress ---> start nginx ingress-controller-pod in kube-system namespace 
+
+minikube addons disable ingress ---> disable ingress
+
+kubectl get ingress -n <namespace-name> ---> list ingress in a namespace
+
+kubectl describe ingress <ingress-name> -n <namespace-name> ---> ingress details including default backend
+
+kubectl scale --replicas=<no.of replicas> <resource-type>/<resource-name>
+kubectl scale --replicas=0 statefulset/mongodb
+
+minikube ssh ---> ssh into minikube that is running on a vm
+
+echo $(minikube ssh-key) ---> print mnikube private key location
+
+echo $(minikube ip) ---> print minikubes ip addr
+
+scp -i $(minikube ssh-key) docker@$(minikube ip):.docker/config.json .docker/config.json ---> secure copy docker config file of minikube to local sys
+
+kubectl create secret generic <my-secret-name> \
+--from-file=.dockerconfigjson=.docker/config.json \
+--type=kubernetes.io/dockerconfig.json   ---> create a secret of type dockerconfigjson for authenticating into private docker repos 
+
+kubectl create secret docker-registry <my-secret-name> \
+--docker-server=<repo-url>  (ex:967277015652.dkr.ecr.ap-south-1.amazonaws.com/myapp) \
+--docker-username=AWS \
+--docker-password=<pwd> (ex: aws ecr get-login-password) ---> similar to above but does not have to manually do docker login to create config.json that is used in creating secret
+
+kubectl port-forward deployment/<deployment-name> <port-no> ---> to access pods from localhost
+kubectl port-forward <pod-name> <port-no>
+
+kubectl get role
+kubectl get clusterrole
+kubectl get rolebinding
+kubectl get clusterrolebinding
+
+kubectl auth can-i <verbs> <resource-name> --namespace <namespace-name>
+kubectl auth can-i create deployments --namespace kube-system
+
+kubectl config get-contexts ---> list the contexts(aws , minikube etc...) present in the ~/.kube/config file
+
+kubectl config current-context  ---> list the context in use
+
+kubectl config use-context <context-name> ---> switch between different contexts
+
+eksctl create cluster \
+--name <cluster-name> \
+--version <version-no> \
+--region <region-code> \
+--nodegroup-name <nodegroup-name> \
+--node-type <instance-type> \
+--nodes <no-of-nodes> \
+--nodes-min <no-of-min-nodes> \
+--nodes-max <no-of-max-nodes> ---> create eks cluster from cli tool eksctl
+
+eksctl create cluster -f <cluster-yaml-file> ---> create eks cluster using config file 
+
+eksctl get clusters ---> get the list of clusters 
+
+eksctl delete cluster <cluster-name> ---> delete cluster
+ 
+
+
+
+
+
+
