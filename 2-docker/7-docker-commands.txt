@@ -1,0 +1,96 @@
+docker pull <img-name>:<tag> ---> pull image from dockerhub
+
+docker run <img-name>:<tag> ---> run img as container
+
+docker run -d <img-name>:<tag> ---> run in detached mode
+
+docker run -p<host-port-no>:<container-port-no> -d <img-name>:<tag> ---> run with port binding (ex: docker run -p6000:6379 -d redis:4.0)
+
+docker run -p<host-port-no>:<container-port-no> -d --name <container-name> <img-name>:<tag> ---> giver container a name
+(docker run -p6000:6379 -d --name my_container redis:4.0) 
+
+docker ps ---> list running containers
+
+docker ps -a: To see all the containers in your machine. 
+
+docker stop <container-name or id>: To stop a running container.
+
+docker start <container-name or id>: To start a container.
+
+docker rm <container-name or id>: To remove/delete a docker container(only if it stopped).
+
+docker images : To see the list of all the available images with their tag, image id, creation time and size.
+
+docker rmi <image_id>: To delete a specific image.
+
+delete rmi -f <image_id>: To delete a docker image forcefully
+
+docker rm -f (docker ps -a | awk '{print$1}'): To delete all the docker container available in your machine
+
+docker image rm <image_name>: To delete a specific image
+
+docker system prune -a: To clean the docker environment, removing all the containers and images.
+
+docker logs <container-name or id> ---> logs of container
+
+docker logs <container-name or id> -f ---> stream the logs
+
+docker exec -it <container-name or id> /bin/bash ---> enter terminal of the container
+
+docker exec -it -u 0 <container-name or id> /bin/bash ---> enter terminal of the container as root user
+
+docker network ls ---> list of docker networks
+
+docker network create <network-name> ---> create new docker network
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+starting mongo and mongo-express in same network
+
+docker run -d \
+-p27017:27017 \
+--network mongo-network \
+--name mongodb \
+-e MONGO_INITDB_ROOT_USERNAME=admin \
+-e MONGO_INITDB_ROOT_PASSWORD=password \
+mongo
+
+docker run -d \
+-p8081:8081 \
+--network mongo-network \
+--name mongo-express \
+-e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+-e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+-e ME_CONFIG_MONGODB_SERVER=mongodb \
+mongo-express
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+docker compose -f <yaml file name> up ---> start multiple containers
+
+docker compose -f <yaml file name> down ---> stop multiple containers
+
+docker build -t <image-name>:<tag> <location of Dockerfile> ---> build docker image based on Dockerfile
+
+docker tag <existing-image-name> <new-image-name> ---> creates a new image with new name
+
+docker login <uri:port> ---> 
+
+docker push <uri/image-name> ---> push image to respective repository based on uri
+
+docker volume create --name <volume-name> ---> create a named volume on host
+
+docker volume ls ---> list volumes
+
+docker volume inspect <volume-name> ---> location of volume
+ 
+docker volume rm <volume-name> ---> delete volume
+
+docker volume prune ---> delete all unused volumes
+
+
+
+
+
+
+
