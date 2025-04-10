@@ -10,7 +10,10 @@ password stored in /etc/shadow
 aravind:$y$j9T$QlTPplDfANSCF5QCGeiVF/$XC53Tffb8KP3GvGTRjMoMdCpkV6drWqZWcoSxw8Rfs.:19153:0:99999:7:::
 useranme:encrypted password:days since the passwrod was changed(from 1st jan 1970): min passwd age: max passwd age: warning period : passwd expiry period : accnt expiration date : reserved field(future use)
 id <username> - list uid and groups with gid
- 
+id -g, --group : print only effective group id
+id -G, --groups : print all group IDs
+id -r, --real : print only real user id
+id -u, --user : print only effective user id
 
 sudo adduser <username>-create new user
 sudo passwd <username>-change password

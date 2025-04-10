@@ -63,9 +63,9 @@ aws iam create-user --user-name <******> ---> create user
 
 aws iam add-user-to-group --user-name <******> --group-name <******> ----> add user to a group
 
-aws iam get-group --group-name ---> list details of a particular group
+aws iam get-group --group-name <******> ---> list details of a particular group
 
-aws iam get-user --user-name ---> list details of a particular user
+aws iam get-user --user-name <******> ---> list details of a particular user
 
 aws iam list-policies --query 'Policies[?PolicyName==`AmazonEC2FullAccess`].Arn' --output text ---> get arn for amazonec2fullaccess policy
 

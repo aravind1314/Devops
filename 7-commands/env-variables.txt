@@ -1,0 +1,18 @@
+env - prints all the environment variables
+printenv - prints all the environment variables
+printenv [env variable NAME] - prints that environment variable
+set - prints all the environment and shell variables
+[shell variable NAME]=[shell variable vaue] - sets the shell variable
+set | grep [shell variable NAME] - displays that variable
+echo $[shell variable NAME] -  prints that shell variable
+export [shell variable NAME] - sets shell variable as env variable
+export [env variable NAME]="[env variable value]" - directly sets the env variable
+unset [env variable NAME] - removes the env or shell variable
+
+presistent variables:
+
+user specific:
+enter "~/.bashrc" file and add the env varibles with this line "export [env variable name]="[env variable value]""
+
+global:
+enter /etc/environment file and add the env varibles with this line "export [env variable name]="[env variable value]""

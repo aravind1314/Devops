@@ -1,0 +1,638 @@
+VI EDITOR:
+
+yy -> copy the line
+x  -> delete a letter
+u  -> undo change
+ctrl+r -> redo the change
+dd -> delete the line
+p -> paste line
+9G -> goto line 9
+:1,3d -> delete lines 1 to 3
+
+-----------------------------------------------------------------------------------------
+
+LINUX COMMANDS:
+
+whoami
+uname
+uname -a
+id -> uid=1001(thor) gid=1001(thor) groups=1001(thor),10(wheel)
+id <user name>
+
+wget url /path -> download file to path
+
+sed -i 's/<old-value>/<new-value>/g' <file-name> -> replace values in a file
+
+----------------------------------------------------------------------------------------
+
+PACKAGE MANAGERS :
+
+rpm -q <package name> ->  query package install status
+
+rpm -qa <pkg1 pkg2 pkg3> -> query multiple packages 
+
+rpm -q openssh-server ansible telnet python3
+
+rpm -i <*.rpm file> -> install a package
+
+rpm -i /opt/ftp-0.17-89.el9.x86_64.rpm
+
+rpm -e <pkg name> -> uninstall/remove package
+
+yum install <pkg name> -> install pkg
+
+yum remove <pkg name> -> remove pkg
+
+yum list <pkg name> -> list intsalled and available pkgs
+
+yum search <key word> -> search pkg's based on the key word
+
+yum repolist -> list all the repos
+
+yum provides <cmnd> -> lists packages that provides the cmnd
+
+-------------------------------------------------------------------------------------------
+
+SERVICES:
+
+systemctl start/stop/status/restart <service name>
+
+systemctl enable/disable <service name> -> enable or disable a service to start at the system start
+
+/usr/lib/systemd/system -> path for *.service files 
+
+app.service file:
+[Unit]
+Description=My python web application
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/code/my_app.py
+ExecStartPre=/bin/bash /opt/code/configure_db.sh
+ExecStartPost=/bin/bash /opt/code/email_status.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target -> to enable a service at the start of the system
+
+--------------------------------------------------------------------------------------------------
+
+NETWORKING:
+
+route -> get routing table
+
+ip route -> list ip routes
+
+ip link -> list network interfaces
+
+ip addr -> list ips
+
+ip a -> list all ips
+
+ip r -> list gateway ip
+
+ip addr add <ip/cidr> dev <interface name> -> add ip addr to a device
+
+ip addr add 172.16.238.16/24 dev eth0
+
+ip route add <ip range/cidr> via <router ip> -> add a route to the route table
+
+ip route add 172.16.238.0/24 via 172.16.239.10
+
+-------------------------------------------------------------------------------------------------------
+
+DNS:
+
+/etc/hosts -> local dns reoslve conf file
+
+/etc/resolv.conf -> name server file
+
+resolv.conf file:
+search yahoo.com -> searching news would resolve to news.yahoo.com
+nameserver 8.8.8.8 -> ip of the name server to be changed here
+options ndots:5
+
+www.google.com -> (sub domain.domain name.top level domain)
+
+
+--------------------------------------------------------------------------------------------------------
+
+JAVA:
+
+javadoc -> documenting
+
+javadoc <.java file> -d <directory name or path>
+
+javadoc MyClass.java -d doc
+
+jdb -> debugger
+
+javac -> compiler
+
+javac Myclass.java -> creates Myclass.class
+
+java Myclass -> run
+
+
+ANT:
+
+/opt/ant/build.xml
+
+ant <target-name> -> run a specific target
+
+ant compile/docs/jar
+
+ant clean -> Removes compiled files and resets the project
+
+ant -f mybuild.xml -> specify diff build.xml file
+
+ant -> run all steps specified in build file
+
+
+MAVEN:
+
+/opt/maven/my-app/pom.xml
+
+mvn package 
+
+mvn install
+
+java -jar target/my-app-1.0-SNAPSHOT.jar 
+no main manifest attribute, in target/my-app-1.0-SNAPSHOT.jar
+soln:
+java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App (cp=classpath)
+
+
+NODEJS:
+
+node <*.js> -> run nodejs app
+
+npm search <pkg name> -> search node pkg
+
+npm install <pkg name> -> install node pkg
+
+/home/user_name/node_modules/ -> path for locally installed pkgs 
+
+npm install <pkg name> -g -> install node pkg globally
+
+/usr/lib/node_modules/ -> path for globally installed pkgs
+
+npm run <script name> -> run script defined in package.json
+
+npm list -> list installed packages
+
+
+PYTHON:
+
+python <*.py> -> run using python2
+
+python3 <*.py> -> run using python3
+
+pip --version 
+
+pip install <pkg name>
+
+/usr/lib/python3/site-packages/ -> installed pkgs path
+
+pip list -> list installed pkgs
+
+pip show <pkg name> -> show about installed pkg
+
+pip install -r <file name> -> install all pkgs in the file
+
+pip install -r requirements.txt
+
+pip install <pkg name> --upgrade -> upgrade installed pkg
+
+pip uninstall <pkg name> -> uninstall pkg
+
+-----------------------------------------------------------------------------------------
+
+WEB SERVER:
+
+apache web server = linux service name httpd
+
+/var/log/httpd -> acces_log , error_log locations for httpd
+
+/etc/httpd/conf/httpd.conf -> conf file for httpd
+
+/var/www/html/ -> root directory for the content to be served by apache
+
+
+APACHE TOMCAT:
+
+/opt/apache-tomcat/bin/startup.sh -> to start tomcat server
+
+/opt/apache-tomcat/bin/shutdown.sh -> to stop tomcat server
+
+/opt/apache-tomcat/conf/server.xml -> conf file for tomcat server
+
+sudo sed -i 's/8081/9090/g' conf/server.xml -> changing port to listen to 9090
+
+/opt/apache-tomcat/logs -> logs
+
+/opt/apache-tomcat/logs/catalina.out 
+
+/opt/apache-tomcat/webapps -> content location for the tomcat to serve
+
+
+GUNICORN:
+
+webserver for pyhton flask or django applications
+
+gunicorn app:app -> run app.py using wsgi app
+
+gunicorn app:app -w <no.> -> start app with additional workers 
+
+gunicorn app:app -D -> run in background , deamon mode
+
+
+PM2:
+
+PM2 is a Production Process Manager for Node.js applications with a built-in Load Balancer.
+
+pm2 start <*.js> -> start and deamonize nodejs application
+
+pm2 stop <*.js> -> stop 
+
+pm2 delete <*.js> -> delete any stopped instances
+
+pm2 start <*.js> -i 4 -> start app with 4 instances
+
+pm2 list -> list all instances
+
+----------------------------------------------------------------------------------------------
+
+DATA BASES:
+
+MYSQL:
+
+/var/lib/mysql -> default directory for mysql
+
+systemctl start mysqld -> start mysql service
+
+sudo grep 'temporary password' /var/log/mysqld.log -> get the temporary pswd
+
+mysql -u root -p<temporary pswd> -> log into mysql as root
+
+SET PASSWORD = '<new password>'; FLUSH PRIVILEGES; -> set new password
+
+SHOW DATABASES;
+
+USE <db name>;
+
+SHOW TABLES;
+
+CREATE USER '<user name>'@'<allowed ip>' IDENTIFIED BY '<password>'; -> create a new user with password allowed from an ip
+
+GRANT ALL PRIVILEGES ON <db name>.<table names> TO '<user name>'@'<localhost>' 
+
+GRANT ALL PRIVILIGES ON kk_db.* TO 'kk_user'@'localhost'; -> grant all prvileges on all tables of kk_db to kk_user from localhost
+
+------------------------------------------------------------------------------------------------
+
+SECURITY:
+
+SSL&TLS:
+
+ssh-keygen -t rsa -> generates pub/priv key pair
+
+.ssh/id_rsa -> priv key
+
+.ssh/id_rsa.pub -> public key
+
+.ssh/authorized_keys -> holds the public keys of hosts that can ssh into server
+
+
+OPENSSL:
+
+sudo openssl req -new -newkey rsa:2048 -nodes -keyout <*.key name> -out <*.csr name> -> generate a csr along with a key in /etc/httpd/csr
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout app01.key -out app01.crt -> generate a self signed certificate along with a key in /etc/httpd/certs
+
+/etc/httpd/conf.d/ssl.conf -> apache ssl conf file
+
+
+------------------------------------------------------------------------------------------------------------
+
+YAML:
+
+key:
+ key: value
+ key2: value2   ->  Dictionary
+ 
+key:
+ - key: value
+   abc: def
+ - key2: value2  -> dictionary with list
+   abd: efg
+   
+JSON:
+
+{
+    "vehicles": {
+        "car": {
+            "color": "blue",
+            "price": "$20,000"
+        },
+        "bus": {
+            "color": "white",
+            "price": "$120,000"
+        }
+    }
+}
+
+
+cat <*.json> | jpath $.vehicles.car.price  -> get the price
+
+{
+    "car": {
+        "color": "blue",
+        "price": "$20,000",
+        "wheels": [
+            {
+                "model": "KDJ39848T",
+                "location": "front-right"
+            },
+            {
+                "model": "MDJ39485DK",
+                "location": "front-left"
+            },
+            {
+                "model": "KCMDD3435K",
+                "location": "rear-right"
+            },
+            {
+                "model": "JJDH3434KK",
+                "location": "rear-left"
+            }
+        ]
+    }
+}
+
+cat <*.json> | jpath $.car.wheels[2].model -> get the model of third wheel
+
+
+japth $[1]
+
+jpath '$[0,3]'
+
+----------------------------------------------------------------------------------------------------------------
+
+LINUX:
+
+pushd -> stack dir path
+
+popd -> back to stacked dir path
+
+ls -lt -> ordered list
+
+ls -ltr -> reverse ordered list
+
+type <cmnd name> -> inbuilt or external
+
+chsh -> change shell
+
+PS1 -> cmnd prompt variable
+echo 'PS1=[\d]\u@\h:\w\$' >> ~/.profile
+
+dmesg -> kernel messages/logs
+
+udevadm info --query=path --name=/dev/sda2
+
+udevadm monitor
+
+lspci
+
+lsblk
+
+lscpu
+
+lsmem
+
+free
+
+lshw
+
+runlevel
+
+dpkg -i <*.deb> -> install
+
+dpkg -r <*.deb> -> remove
+
+dpkg -l <pkg name> -> list
+
+dpkg -s <pkg name> -> status
+
+apt edit-sources -> edit repos list file
+
+tar -xzvf <.tar.gz file> -> extract tar files
+
+tar -cf <new .tar dir name> <files or dir to be compressed>
+
+gzip <.tar file> -> creates .tar.gz file
+
+gunzip <.tar.gz file> -> unzip 
+
+sudo grep -ir 172.16.238.197 /etc/ -> find file that contains 172.16.238.197 in /etc/(i=ignore case sensitive , r=recursively)
+
+zcat /usr/share/man/man1/tail.1.gz | tee /home/bob/pipes -> redirect the contents of tail1 to pipes without extracting
+
+
+ip link set dev eth0 up -> set the network interface eth0 to up
+
+ip route add default via <ip> -> add dfault route to the route table
+
+telnet <ip/domain name> <port no>
+
+nc -zv <ip/domain name> <port no> -> substitute for telnet -z=no data -v=verbose nc=netcat
+
+curl <ip/domain name>
+
+ping <ip/domain name>
+
+nslookup <domain name>
+
+dig <domain name> -> similar to nslookup
+
+traceroute <ip/domain name> -> find no of hops to destination
+
+netstat -lnpt
+
+id -> uid and groups info
+
+id <user name>
+
+who -> user and tty info
+
+last -> prev logins info
+
+sudo addgroup <group name> --gid <group id>
+
+sudo adduser <user name> --uid <user id> --gid <group id> --shell </bin/bash or sh>
+
+sudo chown -R <user name> <file/dir>
+
+ssh-copy-id <user>@<hostname/ip> -> copys the public key on to the server for password less login further
+
+scp -pr <file name> <user>@<hostname/ip>:<destination path to cpoy> -> secure copy(p=preserve timestamps permissions of file , r=recursive copy of folders)
+
+iptables -L -> list rules
+
+iptables -A(add/append) INPUT -s <source ip> -p <protocol> --dport <destination port> -j <action> -> add iptable rule
+
+sudo iptables -A INPUT -s 172.16.238.187 -p TCP --dport 22 -j ACCEPT
+
+sudo iptables -A INPUT -j DROP -> drop all connections from anywhere on any port with any protocol
+
+sudo iptables -A OUTPUT -d 172.16.238.11 -p TCP --dport 5432 -j ACCEPT -> allow outbound connection to 172.16.238.11 on 5432
+
+sudo iptables -A OUTPUT -p TCP --dport 443 -j DROP -> restrict outbound https connection to all ips
+
+sudo iptables -I OUTPUT -d google.com -p TCP --dport 443 -j ACCEPT -> I= input rule at top of the rules chain
+
+crontab -l -> list cronjobs
+
+crontab -e -> edit cronjobs
+
+*/30 * * * * /usr/local/bin/system-debugger.sh -> run every 30 mins
+
+systemctl deamon-reload -> reload the system manager configuration
+
+systemctl edit <*.service file name> --full -> doesnt req deamon reload
+
+systemctl start/stop/restart/reload/enable/disable/status <service name>
+
+systemctl get-default
+
+systemctl set-default multi-user.target
+
+systemctl list-units --all -> list all active and inactive services
+
+journalctl -> list all logs
+
+journalctl -b -> list logs from current boot
+
+journalctl -u <*.service> -> logs of a particular service
+
+journalctl -u docker.service
+
+gdisk /dev/sda -> tool to create partitions
+
+mkfs.ext4 /dev/sda1 -> creates a ext4 file system on device
+
+mount /dev/sda1 /mnt/ext4 -> mount the FS at /mnt
+
+/etc/fstab -> add device details to fstab file to automatically mount the dev at boot
+
+sudo blkid /dev/sda -> get uuid and file system type
+
+DAS - direct attached storage
+
+NAS - network attached storage
+
+SAN - storage area network
+
+NFS - network file system (client - server model)
+
+NFS server : /etc/exports : <folder path to export> <ip1 allowed to access NFS> <ip2> ....
+
+exportfs -a -> exports all present in /etc/exports
+
+LVM - logical volumes
+
+apt install lvm2
+
+pvcreate /dev/sda -> create physical volume
+
+vgcreate my_vg /dev/sda -> create volume group
+
+pvdisplay -> display all physical volumes
+
+vgdisplay -> display all volume groups
+
+lvcreate -L <vol size> -n <name> <volume group name> -> create a logical volume from volume group
+
+lvcreate -L 1G -n vol1 my_vg
+
+lvdisplay -> display all logical volumes
+
+lvs -> list logical volumes
+
+vgs -> list volume groups
+
+mkfs.ext4 /dev/vg-name/lv-name -> create FS for lv
+
+mount /dev/vg-name/lv-name /mnt/data -> mount lv at data
+
+lvresize -L <+/- vol size> -n <lv-name> -> resize the logical volume
+
+resize2fs <lv-name> -> resize logical volume file system 
+
+
+
+
+
+
+   
+   
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

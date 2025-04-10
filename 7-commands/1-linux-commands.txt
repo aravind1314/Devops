@@ -19,6 +19,8 @@ cat [filename]-displays file contents
 file [filename]- displays file type
 ls - displays folder contents
 ls -a(all)-displays all files(hidden)
+ls -lt(time)-displays files and permissions in an order
+ls -ltr(reverse time)-displays files and permissions in reverse order
 ls -R [foldername]-displays all folders and files inside
 find ~(place to find) -name [filename].*(txt,pdf,img....) - finds all files with filename in ~
 find ~(place to find) -name *.txt - finds all text files in ~
@@ -51,6 +53,7 @@ ctl+r - search commands
 man [command name] - document about command
 whatis [command name]
 which [command name] - gives path of the command
+type [command name] - tells if the command is inbuilt or external
 df -T - filesystem type
 df -h - human readable form of utilization FS
 du -h - disk utlization of current dir
@@ -74,6 +77,10 @@ umask -p = display current mask as numeric value
 umask [mask] = set new mask
 lscpu
 lsmem
+pushd <any path to a file or directory> -> remebers current dir 
+popd -> brings to the dir remembered at pushd
+cat > <file name> -> add content to the file upon prompt and save using ctrl+d
+cat >> <file name> -> append content to the file
 
 
 vim commands

@@ -2,6 +2,8 @@ helm list ---> list installed charts
 
 helm repo list ---> list added repos
 
+helm repo update ---> update repos
+
 helm repo add  <my-repo-name> <repo-url> ---> add repo to your helm
 helm repo add bitnami https://charts.bitnami.com/bitnami
 
