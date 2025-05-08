@@ -10,6 +10,8 @@ minikube profile list ---> list profiles
 
 kubectl version ---> k8s version
 
+kubectl run <pod-name> --image=<image-name> ---> run a container inside a pod 
+
 kubectl get all ---> list all components inside the cluster
 
 kubectl get nodes ---> status of the nodes
@@ -84,6 +86,14 @@ kubectl describe ingress <ingress-name> -n <namespace-name> ---> ingress details
 
 kubectl scale --replicas=<no.of replicas> <resource-type>/<resource-name>
 kubectl scale --replicas=0 statefulset/mongodb
+
+kubectl rollout status deployment/<deployment-name> ---> get the status of the rollout
+
+kubectl rollout history  deployment/<deployment-name> ---> get the deployment history with revisions
+kubectl apply -f <deploy-conf-yaml-file> --record ---> this will record the change cause in rollout history 
+
+kubectl rollout undo deployment/<deployment-name> ---> rollsback the deployment to previous revision version
+kubectl rollout undo deployment/<deployment-name> --to-version=<revision-no> ---> rollsback to a specific revision version
 
 minikube ssh ---> ssh into minikube that is running on a vm
 

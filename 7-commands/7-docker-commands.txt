@@ -9,6 +9,9 @@ docker run -p<host-port-no>:<container-port-no> -d <img-name>:<tag> ---> run wit
 docker run -p<host-port-no>:<container-port-no> -d --name <container-name> <img-name>:<tag> ---> giver container a name
 (docker run -p6000:6379 -d --name my_container redis:4.0) 
 
+docker run <image-name>:<tag> <any command> -> append a command 
+(docker run python:3.6 cat /etc/*release*) -> runs pyhton image as a container and executes the appended command inside the container
+
 docker ps ---> list running containers
 
 docker ps -a: To see all the containers in your machine. 
@@ -25,6 +28,12 @@ docker rmi <image_id>: To delete a specific image.
 
 delete rmi -f <image_id>: To delete a docker image forcefully
 
+docker stop $(docker ps -q): stop all running containers (docker ps -q  -> running container ids)
+
+docker rm $(docker ps -aq): remove all containers (docker ps -aq -> all container ids) 
+
+docker rmi $(docker images -q): remove all images (docker images -q -> image ids)
+
 docker rm -f (docker ps -a | awk '{print$1}'): To delete all the docker container available in your machine
 
 docker image rm <image_name>: To delete a specific image
@@ -39,9 +48,21 @@ docker exec -it <container-name or id> /bin/bash ---> enter terminal of the cont
 
 docker exec -it -u 0 <container-name or id> /bin/bash ---> enter terminal of the container as root user
 
+docker inspect <container-id> -> inspect a docker container
+
+docker image inspect <image-id> -> inspect a docker image
+
 docker network ls ---> list of docker networks
 
 docker network create <network-name> ---> create new docker network
+
+docker network inspect <network-name> -> inspect a docker network
+
+docker network create \
+--driver bridge \
+--subnet 182.18.0.0/24 \
+--gateway 182.18.0.1 \
+my-network  --> create a new network
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -88,6 +109,25 @@ docker volume rm <volume-name> ---> delete volume
 
 docker volume prune ---> delete all unused volumes
 
+docker run --cpus=.5 <image-name> --> restrcits the container to not use more than 50% of the cpu on the host
+
+docker run --memory=100m <image-name> --> restrcits the container to not use more than 100m of the memory on the host
+
+docker run --mount type=bind,source=<source-path-on-host>,traget=<target-path-on-container> <image-name> --> alternative to using -v <source-path>:<target-path>
+
+docker run --link <var-name>:<container-name> <image-name> --> connecting containers 
+
+docker run -d \
+> --name my-registry \
+> -p 5000:5000 \
+> --restart always \
+> registry:2  --> run docker registry as container
+
+docker tag <img-name> localost:5000/<img-name>
+
+docker push localhost:5000/<img-name>
+
+docker pull localhost:5000/<img-name>
 
 
 

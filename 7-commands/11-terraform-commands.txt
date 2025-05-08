@@ -18,4 +18,494 @@ terraform state list ---> list resources in the state
 
 terraform state show <resource-name-from-list> ---> detail info of a resource
 
+terraform state mv <old-resource-name> <new-resource-name> ---> rename resources in state file
+
+terraform state pull ---> get contents of remote state
+
+terraform state rm <resource-name> ---> remove a resource from state file
+
+terraform show ---> detail info of all resources
+
+terraform output ---> list all the ouptut values
+
+terraform output <o/p var name> ---> list a specific o/p variable
+
+terraform validate ---> check for any errors 
+
+terraform fmt ---> format your files
+
+terraform providers ---> list all the providers used
+
+terraform providers mirror <path-to-copy-providers> ---> copy providers info to new a file
+
+terraform refresh ---> Update state to match real world (no infra changes)
+
+terraform plan -refresh-only ---> just shows the infra drift , doesnt update the .tfstate
+
+tf plan ---> (Refresh infra) -> (Compare config vs state) -> (Show what to change)
+/vs/
+tf plan -refresh-only ---> Just detect drift, don't plan new changes
+
+terraform apply -refresh-only ---> Actually updates the .tfstate file based on real infrastructure
+
+terraform plan/apply -refresh=flase ---> perform plan/apply without doing the refresh
+
+terraform plan/apply -refresh-only -target=<resource-type.resource-name> ---> refresh state for a specific resource
+
+terraform graph ---> visualise resource structure and dependencies 
+
+export TF_VAR_<variable-name>="<value>" ---> terraform picks up any env variables that start with TF_VAR
+
+--------------------------------------------------------------------------------------------------------------------
+
+variables priority order:
+
+Priority | Source | Example
+1 | CLI -var flag | terraform apply -var="key=value"
+2 | CLI -var-file flag | terraform apply -var-file="dev.tfvars"
+3 | Environment variables | export TF_VAR_key=value
+4 | terraform.tfvars file | Default file automatically loaded
+5 | *.auto.tfvars files | Any .auto.tfvars files automatically loaded
+6 | Default values in .tf code | variable "key" { default = "value" }
+
+---------------------------------------------------------------------------------------------------------------------
+
+meta arguments:
+
+--> lifecyle {
+
+create_before_destroy = true
+
+prevent_destroy = true
+
+ignore_changes = []
+ 
+}
+
+
+--> depends_on = [resource-type.resource-name]
+
+
+--> count
+
+resource "local_file" "name" {
+
+filename = var.filename[count.index]
+
+content = var.content
+
+count = length(var.filename)
+
+}
+
+
+
+--> for_each
+
+resource "local_file" "name" {
+
+filename = each.value
+
+content = var.content
+
+for_each = toset(var.filename)
+
+}
+
+
+--> count is used to create multiple copies of a resource or module based on a number.
+
+How it works:
+You set count = <number>, and Terraform creates that many instances of the resource.
+
+Example:
+
+resource "aws_instance" "example" {
+  count         = 3
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+}
+This creates 3 EC2 instances.
+
+Accessing instances:
+
+Use aws_instance.example[0], aws_instance.example[1], etc., to reference each one individually.
+
+
+--> for_each is used when you want to create resources based on a list or map, and you want more control over each resource (especially for naming or managing them individually).
+
+How it works:
+You give for_each a map or set, and Terraform creates one resource per item.
+
+Example:
+
+resource "aws_instance" "example" {
+  for_each = {
+    "server1" = "ami-11111111"
+    "server2" = "ami-22222222"
+  }
+
+  ami           = each.value
+  instance_type = "t2.micro"
+}
+This creates 2 EC2 instances, one called "server1" and one called "server2".
+
+Accessing instances:
+
+Use aws_instance.example["server1"], aws_instance.example["server2"], etc.
+
+
+-------------------------------------------------------------------------------------------------------------
+
+version constraints:
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "> 3.45.0, !=3.46.0, < 3.48.0"
+    }
+  }
+}         ----->  downloads 3.47.0
+
+
+
+Operator    Description
+--------    ---------------------------------------------------------------
+=, (none)   Allows only one exact version number. Cannot combine with others.
+!=          Excludes an exact version number.
+>, >=, <, <=
+            Compares to a specified version.
+            - > and >= request newer versions.
+            - < and <= request older versions.
+~>          Allows only the right-most version component to increment.
+            Examples:
+            - ~> 1.0.4: Allows 1.0.5, 1.0.10 but not 1.1.0.
+            - ~> 1.1:   Allows 1.2, 1.10 but not 2.0.
+            
+            
+---------------------------------------------------------------------------------------------------------------------
+
+provisioners:
+
+local-exec:
+resource "null_resource" "notify" {
+  provisioner "local-exec" {
+    command = "echo 'Deployment complete!' >> log.txt"
+  }
+}
+
+remote-exec:
+resource "aws_instance" "web" {
+  ami           = "ami-123456"
+  instance_type = "t2.micro"
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update",
+      "sudo apt install -y nginx"
+    ]
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("~/.ssh/id_rsa")
+    host        = self.public_ip
+  }
+}
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+user_data ---> pass scripts to ec2 , runs only at first boot of ec2
+
+user_data: using heredoc syntax
+
+resource "aws_instance" "web" {
+  ami           = "ami-123456"
+  instance_type = "t2.micro"
+
+  user_data = <<-EOF
+              #!/bin/bash
+              apt update
+              apt install -y nginx
+              systemctl enable nginx
+              systemctl start nginx
+              EOF
+
+  tags = {
+    Name = "web-server"
+  }
+}
+
+user_data: using file
+
+resource "aws_instance" "web" {
+  ami           = "ami-123456"
+  instance_type = "t2.micro"
+  user_data     = file("init.sh")  # reads content of init.sh
+}
+
+----------------------------------------------------------------------------------------------------------------------------
+
+logs:
+
+enable logs:
+
+export TF_LOG=TRACE (TRACE,DEBUG,INFO,WARN,ERROR) order in decreasing level of verbosity
+
+
+store logs in a file:
+
+export TF_LOG_PATH=<path-to-desired-log-file>
+
+
+export TF_LOG_CORE , TF_LOG_PROVIDER ---> logs for terraform itself and provider plugins
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+Taints:
+
+terraform taint <resource-type.resource-name> ---> taint a resource , will be reacreated in next apply
+
+terraform untaint <resource-type.resource-name> ----> untaint a resource
+
+-----------------------------------------------------------------------------------------------------------------
+
+import: import externally created resources to be managed by terraform
+
+terraform import <resource-type.resource-name> <unique-id-of-resource> 
+
+terraform import aws_instance.jade-mw i-ebf149c5c052ffd3a
+
+-------------------------------------------------------------------------------------------------------------------
+
+Modules:
+
+terraform get ---> install modules (not providers)
+
+terraform module list ---> list all modules
+
+terraform module show <module.name> ---> show details of a module
+
+module "<module-name>" {
+source = "<source-path>"
+# required variables
+}
+
+source ---> local modules (or) modules from terraform public registry
+
+-------------------------------------------------------------------------------------------------------------------
+
+Functions:
+
+terraform console ---> 
+
+---> file("file-name") ---> read a file
+
+---> toset(["a","b","c","a"]) ---> convert a list to set
+["a","b","c"]
+
+
+
+numeric_functions:
+
+---> max(5, 12, 3, 99, 21)
+99
+
+---> min(5, 12, 3, 99, 21)
+5
+
+---> ceil(10.9)
+11
+
+---> floor(10.9)
+10
+
+
+
+
+string_functions:
+
+---> split(":","a:b:c:d") ---> string to list
+["a","b","c","d"]
+
+example:
+variable "cloud_users" {
+     type = string
+     default = "andrew:ken:faraz:mutsumi:peter:steve:braja"  
+}
+
+resource "aws_iam_user" "cloud" {
+    count = length(split(":",var.cloud_users))
+    name = split(":",var.cloud_users)[count.index]
+}
+
+
+---> join("-", ["a", "b", "c"]) ---> list to string
+"a-b-c"
+
+
+---> lower("Terraform")
+terraform
+
+
+---> upper("terraform")
+TERRAFORM
+
+
+---> title("user-generated password file")
+"User-Generated Password File"
+
+
+---> substr("adcd,efgh,ijkl",0,4)
+abcd
+
+substr("adcd,efgh,ijkl",5,4)
+efgh
+
+example:
+variable "media" {
+  type = set(string)
+  default = [ 
+    "/media/tails.jpg",
+    "/media/eggman.jpg",
+    "/media/ultrasonic.jpg",
+    "/media/knuckles.jpg",
+    "/media/shadow.jpg",
+      ] 
+}
+
+resource "aws_s3_object" "upload_sonic_media" {
+    bucket = "bucket-name"
+    for_each = var.media
+    source = each.value
+    key = substr(each.value,7,20)
+}
+
+
+
+
+collection_functions:
+
+---> length(["a","b","c"])
+3
+
+
+---> index(["a","b","c"],"c")
+2
+
+
+---> element(["a","b","c","d"],2)
+"c"
+
+example:
+element(split(":",var.cloud_users),6)
+"braja"
+
+
+---> contains(toset(["a", "b", "c"]), "d")
+false
+
+contains(["dev", "stage", "prod"], "stage")
+true
+
+
+
+
+map_functions:
+
+var tags {
+type = map
+default = {
+    Name  = "web"
+    Env   = "prod"
+    Owner = "team"
+    }
+}
+
+---> keys(var.tags)
+["Env", "Name", "Owner"]
+
+
+----> values(var.tags)
+[ "web", "prod" , "team"]
+
+
+---> lookup(var.tags, "Name")
+web
+
+lookup(var.tags, "region" , "ap-south-2") ---> default when key not found
+ap-south-2
+
+
+
+
+logical-operators:
+
+==,!=,&&,||,>,<,<=,<=
+
+resource "aws_instance" "mario_servers" {
+    ami = var.ami
+    tags = {
+        Name = var.name
+    }  
+    instance_type = var.name == "tiny"?var.small:var.large
+}
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
+workspaces:
+
+terraform workspace new <workspace-name> ---> create a new workspace
+
+terraform workspace list ---> lsit workspaces
+
+terraform workspace select <workspace-name> ---> switch to desired workspace
+
+terraform.tfstate.d/<workspace-name>/.tfstate ---> location of state file for each workspace
+
+
+variable "region" {
+    type = map
+    default = {
+        "us-payroll" = "us-east-1"
+        "uk-payroll" = "eu-west-2"
+        "india-payroll" = "ap-south-1"
+    }
+
+}
+variable "ami" {
+    type = map
+    default = {
+        "us-payroll" = "ami-24e140119877avm"
+        "uk-payroll" = "ami-35e140119877avm"
+        "india-payroll" = "ami-55140119877avm"
+    }
+}
+
+module "payroll_app" {
+    source = "../modules/payroll-app"
+    app_region = lookup(var.region,terraform.workspace)
+    ami = lookup(var.ami,terraform.workspace)
+}
+
+create threes workspace us-payroll,uk-payroll,india-payroll
+
+create all resources in diff workspaces using one config file
+
+
+
+
+
+
+
+
+
+
+
 

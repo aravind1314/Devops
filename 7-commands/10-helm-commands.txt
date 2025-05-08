@@ -21,12 +21,185 @@ helm template -f <my-values-file-path> <chart-name> ---> render chart templates 
 
 helm install -f <my-values-file-path> <release-name> <chart-name> ---> install chart with release name and default values replaced
 
-helm install --dry-run -f <my-values-file-path> <release-name> <chart-name> ---> render templates without installing
-
 ./helmfile sync ---> deploy all the releases defined in a helmfile
 
 ./helmfile list ---> list all the releases synced 
 
 ./helmfile destroy ---> remove all the releases dployed using helmfile
+
+helm pull <repo-name>/<chart-name> ---> get the chart packaged as tar
+
+helm pull --untar <repo-name>/<chart-name> ---> get the chart and untar it
+
+helm history <release-name> ---> history of revisions for a specific release
+
+helm rollback <release-name> <revision-number> ---> rollback to a specific revision 
+
+helm upgrade <release-name> <repo-name/chart-name> ---> upgrade a release to latest version
+
+helm upgrade <release-name> <repo-name/chart-name> --version <chart-version-no> ---> upgrade to specific chart version
+
+helm lint <path-to-chart> ---> check for syntax errors
+
+helm template <path-to-chart> ---> render templates with values that will be applied , check for any template errors
+
+helm template <release-name> <path-to-chart>
+
+helm template <release-name> <path-to-chart> --debug ---> verbose o/p of the error
+
+helm install --dry-run -f <my-values-file-path> <release-name> <chart-name> ---> render templates without installing , catch any k8s error before installing
+
+----------------------------
+
+helm functions:
+
+{{ upper .Values.image.name }} ---> nginx to NGINX
+
+{{ default "nginx:2.4" .Values.image.name }} ---> nginx to nginx:2.4
+
+{{ .Values.image.name | upper | quote }} ---> nginx to "NGINX"
+
+https://helm.sh/docs/chart_template_guide/function_list/
+
+-----------------------------------
+
+flow-control:
+
+{{- if .Values.addlabels }}
+
+metadata:
+ labels:
+  name: {{ .Values.labels.name }}
+  env: {{ .Values.labels.env }}
+  
+{{- end }}
+
+https://helm.sh/docs/chart_template_guide/control_structures/
+
+-------------------------------------
+
+scopes using with:
+
+{{- with .Values.labels }}
+
+ labels:
+  name: {{ .name }} ---> instead of 
+  env: {{ .env }}
+  releaseName: {{ $.Release.Name }} 
+  
+{{- end }}
+
+-------------------------------------
+
+range:
+
+region:
+ - hyd
+ - chn
+ - blr
+ - dhl
+ - mbi
+ 
+{{- range .Values.region }}
+
+ - {{ . }}
+ 
+{{- end }}
+
+--------------------------
+
+misc exmp:
+
+ServiceAccount:
+ create: true
+ name: webapp-sa
+ labels:
+  type: web
+  env: dev
+  tier: frontend
+
+{{- with .Values.serviceAccount.create }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $.Values.serviceAccount.name }}
+  labels:
+    {{- range $key, $val := $.Values.serviceAccount.labels }}
+    {{ $key }}: {{ $val }}
+    {{- end }}
+    app: webapp-color
+{{- end }}
+
+
+----------------------------------------
+
+named templates:
+
+/templates/_helpers.tpl                              ---> any file that start with a "_" is not considered for creating a k8s resource
+
+{{- define "labels" }}                               ---> define a template named labels
+app.kubernetes.io/name: {{ .Chart.Name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+/templates/deployment.yaml
+
+metadata:
+ labels:
+  {{- include "labels" . | nindent 4 }}        ---> includes labels template , "." Passes the current context into the template to access values like .Chart .Release .Values 
+ 
+
+
+--------------------------------------------------
+
+hooks:
+
+run resources at specific points in the release lifecycle (before/after install, upgrade, delete, etc.)
+
+useful for db backups before a upgrade or pre install checks etc...
+
+define a hook:
+
+metadata:
+  annotations:
+    "helm.sh/hook": pre-install
+
+
+hook types:
+
+pre/post-insall/delete/upgrade/rollback
+test
+
+job as hook:
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+spec:
+  template:
+    spec:
+      containers:
+      - name: migrate
+        image: myapp:latest
+        command: ["./migrate"]
+      restartPolicy: Never
+
+
+optional annotations:
+
+helm.sh/hook-delete-policy: before-hook-creation (or) hook-succeeded (or) hook-failed
+
+helm.sh/hook-weight: 3/-4 (lower runs first)
+
+-----------------------------------------------------------
+
+helm package <chart-folder> ---> packaging helm chart to upload or share
+
+
+
+
 
 
